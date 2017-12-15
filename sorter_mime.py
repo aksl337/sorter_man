@@ -3,62 +3,53 @@ import sys
 import os
 import shutil
 import magic
-import errno
+# import errno
+# import re
 
 
 def mv_stuff(inputlist):
     source = inputlist[0]
-    ls_source = os.listdir(source)
-    # list of all the only files in source directory ommiting subdirectories
-    fileList = [f for f in ls_source if os.path.isfile(os.path.join(source, f))]
 
+    # list of only files in source directory omitting subdirectories
+    fileList = [f for f in os.listdir(source) if os.path.isfile(os.path.join(source, f))]
+
+    # dictonary for folders as key and filetypes as values
     maindict = {
         'VID': ['webm', 'mp4', 'avi', '3gp', 'mkv', 'srt', 'video'],
-        'AUD': ['audio', 'mp3', 'ogg', 'wav', 'mpeg4'],
-        'ASCII': ['txt', 'py', 'c', 'c++', 'cpp', 'java', 'asm', 'sh', 'js', 'text'],
+        'AUD': ['audio', 'mp3', 'ogg', 'wav', 'mpeg4', 'mpeg'],
+        'ASCII': ['txt', 'htm', 'py', 'c', 'c++', 'cpp', 'java', 'asm', 'sh', 'js', 'text', 'plain', 'shell'],
         'DOCS': ['pdf', 'doc', 'docx', 'conf', 'pptx', 'epub'],
         'COMPRESS': ['zip', 'tar', 'tarxz', 'targz', 'gz', 'bz2', 'empty', 'rar', 'jar'],
         'IMAGES': ['image', 'png', 'jpg', 'jpeg', 'gif', 'img'],
-        'PROGRAMS': ['application', 'run', 'rpm', 'bundle', 'exe', 'deb', 'bin', 'apk'], 'ISOs': ['iso', 'ova']
+        'PROGRAMS': ['run', 'rpm', 'bundle', 'exe', 'deb', 'bin', 'apk'],
+        'ISOs': ['iso', 'ova']
     }
 
     # create main folder
     newdict = source + inputlist[1]
-
-    try:
-        if os.path.exists(newdict):
-            os.mkdir(newdict)
-    except OSError as exc:
-        if exc.errno != errno.EEXIST:
-            raise
-        # pass
+    os.chdir(source)
+    if not os.path.exists(newdict):
+        os.mkdir(newdict)
 
     # create sub folders inside newly created main folder
     for key, value in maindict.iteritems():
         if not os.path.exists(os.path.join(newdict, key)):
-            try:
-                os.mkdir(os.path.join(newdict, key))
-            except OSError as exc:
-                if exc.errno != errno.EEXIST:
-                    raise
-                # pass
-    # iterate through main dict check file extenstions and move files to respective directories
+            os.mkdir(os.path.join(newdict, key))
+
+    # iterate through main dict, check file extenstions and move files to respective directories
     for x, y in maindict.iteritems():
+        dest = os.path.join(newdict, x)
+        fileList = [f for f in os.listdir(source) if os.path.isfile(os.path.join(source, f))]
         for f in fileList:
-            f = os.path.join(source, f)
-            dest = os.path.join(newdict, x)
-
-            if not os.path.exists(os.path.join(dest, f)):
-                try:
-                    if os.path.exists(f):
-                        mime_get = magic.from_file(f, mime=True)
-                        if any(element in mime_get for element in tuple(y)):
-                            shutil.move(f, dest)
-
-                except OSError as exc:
-                    if exc.errno != errno.EEXIST:
-                        raise
-                    # pass
+            in_files = os.path.join(source, f)
+            mime_get = magic.from_file(in_files, mime=True)
+            if os.path.exists(os.path.join(dest, f)):
+                pass
+            elif os.path.exists(in_files):
+                if in_files.endswith(tuple(y)):
+                    shutil.move(in_files, dest)
+                elif any(element in mime_get.split("/")[1] for element in tuple(y)):
+                    shutil.move(in_files, dest)
 
 
 if __name__ == "__main__":
