@@ -14,10 +14,16 @@ There are two files
 
 **Prerequisites**
 python 2.7/with few changes python3 as well
+
+
 import shutil,sys,os,magic (required)
 
 pip install shutil
+
+
 pip install magic
 
+
+**script in action**
 [![sortman demo](https://img.youtube.com/vi/JneqRtPMsOc/0.jpg)](https://www.youtube.com/watch?v=JneqRtPMsOc)
 
