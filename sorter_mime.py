@@ -26,19 +26,19 @@ def mv_stuff(inputlist):
     }
 
     # create main folder
-    newdict = source + inputlist[1]
+    newdirr = source + inputlist[1]
     os.chdir(source)
-    if not os.path.exists(newdict):
-        os.mkdir(newdict)
+    if not os.path.exists(newdirr):
+        os.mkdir(newdirr)
 
     # create sub folders inside newly created main folder
     for key, value in maindict.iteritems():
-        if not os.path.exists(os.path.join(newdict, key)):
-            os.mkdir(os.path.join(newdict, key))
+        if not os.path.exists(os.path.join(newdirr, key)):
+            os.mkdir(os.path.join(newdirr, key))
 
     # iterate through main dict, check file extenstions and move files to respective directories
     for x, y in maindict.iteritems():
-        dest = os.path.join(newdict, x)
+        dest = os.path.join(newdirr, x)
         fileList = [f for f in os.listdir(source) if os.path.isfile(os.path.join(source, f))]
         for f in fileList:
             in_files = os.path.join(source, f)
