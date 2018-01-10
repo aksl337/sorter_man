@@ -15,14 +15,14 @@ def mv_stuff(inputlist):
 
     # dictonary for folders as key and filetypes as values
     maindict = {
-        'VID': ['webm', 'mp4', 'avi', '3gp', 'mkv', 'srt', 'video'],
-        'AUD': ['audio', 'mp3', 'ogg', 'wav', 'mpeg4', 'mpeg'],
-        'ASCII': ['txt', 'htm', 'py', 'c', 'c++', 'cpp', 'java', 'asm', 'sh', 'js', 'text', 'plain', 'shell'],
-        'DOCS': ['pdf', 'doc', 'docx', 'conf', 'pptx', 'epub'],
-        'COMPRESS': ['zip', 'tar', 'tarxz', 'targz', 'gz', 'bz2', 'empty', 'rar', 'jar'],
-        'IMAGES': ['image', 'png', 'jpg', 'jpeg', 'gif', 'img'],
-        'PROGRAMS': ['run', 'rpm', 'bundle', 'exe', 'deb', 'bin', 'apk'],
-        'ISOs': ['iso', 'ova']
+        'VID': ('webm', 'mp4', 'avi', '3gp', 'mkv', 'srt', 'video'),
+        'AUD': ('m4a', 'audio', 'mp3', 'ogg', 'wav', 'mpeg4', 'mpeg'),
+        'ASCII': ('txt', 'htm', 'py', 'c', 'c++', 'cpp', 'java', 'asm', 'sh', 'js', 'text', 'plain', 'shell'),
+        'DOCS': ('pdf', 'doc', 'docx', 'conf', 'pptx', 'epub'),
+        'COMPRESS': ('zip', 'tar', 'tarxz', 'targz', 'gz', 'bz2', 'empty', 'rar', 'jar'),
+        'IMAGES': ('image', 'png', 'jpg', 'jpeg', 'gif', 'img'),
+        'PROGRAMS': ('run', 'rpm', 'bundle', 'exe', 'deb', 'bin', 'apk'),
+        'ISOs': ('iso', 'ova')
     }
 
     # create main folder
@@ -46,7 +46,7 @@ def mv_stuff(inputlist):
             if os.path.exists(os.path.join(dest, f)):
                 pass
             elif os.path.exists(in_files):
-                if in_files.endswith(tuple(y)):
+                if in_files.endswith(y):
                     shutil.move(in_files, dest)
                 elif any(element in mime_get.split("/")[1] for element in tuple(y)):
                     shutil.move(in_files, dest)
